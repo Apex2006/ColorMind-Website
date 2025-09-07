@@ -1,0 +1,229 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="app-container">
+    <div class="container">
+        <div class="row justify-content-center">
+            <!-- Main Content Card -->
+            <div class="col-12">
+                <div class="main-card">
+                    <div class="row g-4">
+                        <!-- Left Panel - Controls -->
+                        <div class="col-lg-6">
+                            <div class="controls-panel">
+                <!-- Welcome Section -->
+                <div class="welcome-section text-center mb-4">
+                    <h2 class="welcome-title">🎨 Welcome to ColorMind AI</h2>
+                    <p class="welcome-subtitle">Upload a photo or pick a base color to begin your palette journey</p>
+                </div>
+
+                <!-- Upload Section -->
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 class="card-title mb-0">
+                            <i data-feather="upload" class="me-2"></i>
+                            Upload Room Photo
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="upload-area" id="uploadArea">
+                            <div class="upload-content">
+                                <i data-feather="image" class="upload-icon"></i>
+                                <p class="upload-text">Drag & drop your room photo here</p>
+                                <p class="upload-subtext">or click to browse</p>
+                                <small class="text-muted">JPG, PNG up to 16MB</small>
+                            </div>
+                            <input type="file" id="fileInput" accept="image/*" class="d-none">
+                        </div>
+                        
+                        <div class="uploaded-image-preview d-none" id="imagePreview">
+                            <img id="previewImg" src="" alt="Uploaded image" class="img-fluid rounded">
+                            <button type="button" class="btn btn-sm btn-outline-danger mt-2" id="removeImage">
+                                <i data-feather="x" class="me-1"></i>Remove
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Style Selection -->
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 class="card-title mb-0">
+                            <i data-feather="home" class="me-2"></i>
+                            Interior Style
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <select class="form-select" id="styleSelect">
+                            <option value="scandinavian">Scandinavian</option>
+                            <option value="japandi">Japandi</option>
+                            <option value="minimalist">Minimalist</option>
+                            <option value="industrial">Industrial</option>
+                            <option value="mediterranean">Mediterranean</option>
+                        </select>
+                        <small class="text-muted">Choose your preferred interior design style</small>
+                    </div>
+                </div>
+
+                <!-- Mood Selection -->
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 class="card-title mb-0">
+                            <i data-feather="heart" class="me-2"></i>
+                            Mood
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="btn-group w-100" role="group" id="moodButtons">
+                            <input type="radio" class="btn-check" name="mood" id="mood-calm" value="calm" checked>
+                            <label class="btn btn-outline-primary" for="mood-calm">Calm</label>
+                            
+                            <input type="radio" class="btn-check" name="mood" id="mood-cozy" value="cozy">
+                            <label class="btn btn-outline-primary" for="mood-cozy">Cozy</label>
+                            
+                            <input type="radio" class="btn-check" name="mood" id="mood-luxury" value="luxury">
+                            <label class="btn btn-outline-primary" for="mood-luxury">Luxury</label>
+                            
+                            <input type="radio" class="btn-check" name="mood" id="mood-energetic" value="energetic">
+                            <label class="btn btn-outline-primary" for="mood-energetic">Energetic</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Lighting Simulation -->
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 class="card-title mb-0">
+                            <i data-feather="sun" class="me-2"></i>
+                            Lighting
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="btn-group w-100" role="group" id="lightingButtons">
+                            <input type="radio" class="btn-check" name="lighting" id="lighting-daylight" value="daylight" checked>
+                            <label class="btn btn-outline-warning" for="lighting-daylight">☀️ Daylight</label>
+                            
+                            <input type="radio" class="btn-check" name="lighting" id="lighting-warm" value="warm_light">
+                            <label class="btn btn-outline-warning" for="lighting-warm">💡 Warm</label>
+                            
+                            <input type="radio" class="btn-check" name="lighting" id="lighting-cool" value="cool_led">
+                            <label class="btn btn-outline-warning" for="lighting-cool">💡 Cool</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Color Harmony -->
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 class="card-title mb-0">
+                            <i data-feather="target" class="me-2"></i>
+                            Color Harmony
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <select class="form-select" id="harmonySelect">
+                            <option value="complementary">Complementary</option>
+                            <option value="analogous">Analogous</option>
+                            <option value="triadic">Triadic</option>
+                            <option value="tetradic">Tetradic</option>
+                            <option value="monochromatic">Monochromatic</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Generate Button -->
+                <div class="d-grid">
+                    <button class="btn btn-primary btn-lg generate-btn" id="generateBtn">
+                        <i data-feather="zap" class="me-2"></i>
+                        Generate Palette
+                    </button>
+                </div>
+            </div>
+        </div>
+
+                        <!-- Right Panel - Palette Display -->
+                        <div class="col-lg-6">
+                            <div class="palette-panel">
+                <!-- Palette Header -->
+                <div class="palette-header mb-4">
+                    <h3 class="palette-name" id="paletteName">Your Color Palette</h3>
+                    <div class="palette-actions">
+                        <button class="btn btn-outline-primary" id="shuffleBtn" disabled>
+                            <i data-feather="shuffle" class="me-2"></i>Shuffle
+                        </button>
+                        <button class="btn btn-outline-success" id="exportBtn" disabled>
+                            <i data-feather="download" class="me-2"></i>Export
+                        </button>
+                        <button class="btn btn-outline-info" id="copyHexBtn" disabled>
+                            <i data-feather="copy" class="me-2"></i>Copy HEX
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Color Swatches -->
+                <div class="color-swatches" id="colorSwatches">
+                    <div class="empty-state">
+                        <i data-feather="image" class="empty-icon"></i>
+                        <h4>Ready to Create</h4>
+                        <p>Upload a room photo or select your preferences to generate a beautiful color palette</p>
+                    </div>
+                </div>
+
+                <!-- Room Preview -->
+                <div class="room-preview mt-4" id="roomPreview">
+                    <h5 class="preview-title">Room Preview</h5>
+                    <div class="preview-container">
+                        <div class="preview-room" id="previewRoom">
+                            <!-- Simple room mockup will be generated here -->
+                            <div class="room-wall" id="roomWall"></div>
+                            <div class="room-floor" id="roomFloor"></div>
+                            <div class="room-furniture" id="roomFurniture"></div>
+                        </div>
+                    </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Export Modal -->
+<div class="modal fade" id="exportModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Export Palette</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label for="exportFormat" class="form-label">Export Format</label>
+                    <select class="form-select" id="exportFormat">
+                        <option value="png">PNG Swatch Sheet</option>
+                        <option value="json">JSON Data</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="exportName" class="form-label">Palette Name</label>
+                    <input type="text" class="form-control" id="exportName" placeholder="My Beautiful Palette">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="confirmExport">Download</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Initialize the app when page loads
+    document.addEventListener('DOMContentLoaded', function() {
+        initializeColorMindApp();
+    });
+</script>
+{% endblock %}
